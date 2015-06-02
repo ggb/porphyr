@@ -1,8 +1,7 @@
 defmodule Porphyr.ParseNTriple do
-  require Logger
-  
   alias Porphyr.HierarchyNode
-  
+  require Logger
+
   @lang "en"
     
   defp prepare_identifier(s) do

@@ -1,8 +1,8 @@
 defmodule Porphyr.Activation do
-  require Logger
   alias Porphyr.HierarchyNode
   alias Porphyr.HierarchyOperations
-
+  require Logger
+  
   @decay_factor 0.4
 
   defp iterate_broader_nodes([], hierarchy, _activated_nodes), do: hierarchy
