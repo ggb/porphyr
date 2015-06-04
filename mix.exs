@@ -25,6 +25,8 @@ defmodule Porphyr.Mixfile do
   #
   # Type `mix help deps` for more examples and options
   defp deps do
-    []
+    [
+      {:parseSKOS, git: "http://github.com/ggb/parseSKOS"}
+    ]
   end
 end

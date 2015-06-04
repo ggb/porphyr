@@ -1,6 +1,6 @@
 defmodule Porphyr.HierarchyOperations do
   require Logger
-  alias Porphyr.HierarchyNode
+  alias ParseSKOS.HierarchyNode
 
   @doc """
   Write a list of tuples into an empty hierarchy. 

@@ -1,5 +1,5 @@
 defmodule Porphyr.OneHop do
-  alias Porphyr.HierarchyNode
+  alias ParseSKOS.HierarchyNode
   alias Porphyr.HierarchyOperations
 
   defp calc_all_activated_children(activated_nodes, current_node) do

@@ -1,5 +1,5 @@
 defmodule Porphyr.Activation do
-  alias Porphyr.HierarchyNode
+  alias ParseSKOS.HierarchyNode
   alias Porphyr.HierarchyOperations
   require Logger
   
@@ -55,6 +55,8 @@ defmodule Porphyr.Activation do
   """
   def activation_fun(:base, decay) do
     fn oldVal, newVal, _broader -> 
+      IO.puts oldVal
+      IO.puts newVal
       oldVal + ( newVal * decay )
     end
   end
