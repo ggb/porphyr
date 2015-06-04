@@ -55,8 +55,6 @@ defmodule Porphyr.Activation do
   """
   def activation_fun(:base, decay) do
     fn oldVal, newVal, _broader -> 
-      IO.puts oldVal
-      IO.puts newVal
       oldVal + ( newVal * decay )
     end
   end
@@ -75,11 +73,12 @@ defmodule Porphyr.Activation do
 
   """
   def generic_single_node({ identifier, newVal }, hierarchy, fun) do
-    %HierarchyNode{ broader: broader } = Dict.get(hierarchy, identifier)
+    %HierarchyNode{ broader: broader, value: oldVal } = Dict.get(hierarchy, identifier)
+    currentVal = fun.( oldVal, newVal, broader |> length )
+    IO.puts "#{oldVal}, #{newVal}, #{currentVal}"
 
     updated_hierarchy = Dict.update!(hierarchy, identifier, fn hnode -> 
-      oldVal = hnode.value
-      %HierarchyNode{ hnode | value: fun.( oldVal, newVal, hnode.broader |> length ) } 
+      %HierarchyNode{ hnode | value: currentVal } 
     end)    
 
     if broader == [] do
@@ -88,12 +87,12 @@ defmodule Porphyr.Activation do
       Enum.reduce(broader, updated_hierarchy, fn ele, acc -> 
         case Dict.get(acc, ele) do
           %HierarchyNode{ identifier: id, value: val } -> 
-            generic_single_node({ id, val }, acc, fun)
+            generic_single_node({ id, currentVal }, acc, fun)
           nil -> 
             # Logger.debug ele
             #
             # In some cases, e. g. in the SWP-hierarchy their might appear references to 
-            # nodes, that does not exist anymore. If that is the case, just return the 
+            # nodes, that do not exist anymore. If that is the case, just return the 
             # current state of the hierarchy and be happy.
             acc
         end 
@@ -105,8 +104,8 @@ defmodule Porphyr.Activation do
     activation = activation_fun(activation, decay)
     filled_hierarchy = HierarchyOperations.list_to_hierarchy(concepts, hierarchy)
     
-    Enum.reduce(concepts, filled_hierarchy, fn tuple, acc -> 
-      generic_single_node(tuple, acc, activation)
+    Enum.reduce(concepts, filled_hierarchy, fn { label, descriptor }, acc -> 
+      generic_single_node({ descriptor, 0 }, acc, activation)
     end)
     |> HierarchyOperations.vectorize_and_normalize
     |> Enum.sort(fn { _, fst }, { _, scd} -> fst > scd end)

@@ -6,14 +6,10 @@ defmodule Porphyr.HierarchyOperations do
   Write a list of tuples into an empty hierarchy. 
   """
   def list_to_hierarchy(list, hierarchy) when is_list(list) do
-    Enum.reduce(list, hierarchy, fn { ident, new_val }, acc -> 
-      Dict.update(acc, ident, %HierarchyNode{ identifier: ident, value: new_val }, fn val -> %{ val | value: new_val } end)
+    Enum.reduce(list, hierarchy, fn { _label, descriptor }, acc -> 
+      Dict.update!(acc, descriptor, fn hierarchy_node -> %{ hierarchy_node | value: hierarchy_node.value + 1 } end)
     end)
   end
-  
-  def list_to_hierarchy(list, hierarchy) do
-    Enum.to_list(list) |> list_to_hierarchy(hierarchy)
-  end 
   
   @doc """
   Returns the top level concepts.
