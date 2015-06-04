@@ -4,12 +4,12 @@ defmodule Porphyr.OneHop do
 
   defp calc_all_activated_children(activated_nodes, current_node) do
     try do
-      Enum.reduce(activated_nodes, [], fn { ele_id, value }, acc -> 
-        case Enum.find(current_node.narrower, fn child -> child == ele_id end) do
+      Enum.reduce(activated_nodes, [], fn { _label, descriptor }, acc -> 
+        case Enum.find(current_node.narrower, fn child -> child == descriptor end) do
           nil -> 
             acc
           _ ->
-            [ { ele_id, value } | acc ]
+            [ { descriptor, current_node.value } | acc ]
         end
       end)
     rescue
@@ -37,8 +37,8 @@ defmodule Porphyr.OneHop do
   
   """
   def one_hop_activation(hierarchy, activated_nodes) do
-    Enum.map(activated_nodes, fn { ele_id, _value } -> 
-      %HierarchyNode{broader: ancestors} = Dict.get(hierarchy, ele_id)
+    Enum.map(activated_nodes, fn { _label, descriptor } -> 
+      %HierarchyNode{broader: ancestors} = Dict.get(hierarchy, descriptor)
       ancestors
     end)
     |> List.flatten
