@@ -4,13 +4,13 @@
 
 ## Examples
 
-First, create some input data. **Porphyr** expects to get data as a list of tuples, where the first element is a concepts label and the second element is the concepts descriptor. (Actually you only need the descriptor.) You can use the (aleph)[https://github.com/ggb/aleph]-module to read in a text, identify concepts and output data in the right format. 
+First, create some input data. **Porphyr** expects to get data as a list of tuples, where the first element is a concepts label and the second element is the concepts descriptor. (Actually you only need the descriptor.) You can use the [aleph](https://github.com/ggb/aleph)-module to read in a text, identify concepts and output data in the right format. 
 
 ```bash
 iex(1)> concepts = Aleph.Entities.get(text)
 ```
 
-Then you need an empty hierarchy-structure. **Porphyr** ships with (ParseSKOS)[https://github.com/ggb/parseSKOS] as dependency. Create a hierarchy (which represents the Computer Classification System-vocabluary) with the following statement.
+Then you need an empty hierarchy-structure. **Porphyr** ships with [ParseSKOS](https://github.com/ggb/parseSKOS) as dependency. Create a hierarchy (which represents the Computer Classification System-vocabluary) with the following statement.
 
 ```bash
 iex(2)> hierarchy = ParseSKOS.ParseTurtle.get(:ccs)
