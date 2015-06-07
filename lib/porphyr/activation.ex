@@ -86,7 +86,7 @@ defmodule Porphyr.Activation do
     else
       Enum.reduce(broader, updated_hierarchy, fn ele, acc -> 
         case Dict.get(acc, ele) do
-          %HierarchyNode{ identifier: id, value: val } -> 
+          %HierarchyNode{ identifier: id } -> 
             generic_single_node({ id, currentVal }, acc, fun)
           nil -> 
             # Logger.debug ele
@@ -99,12 +99,19 @@ defmodule Porphyr.Activation do
       end)
     end
   end  
-  
-  def get(concepts, hierarchy, activation, decay \\ @decay_factor) do
-    activation = activation_fun(activation, decay)
+
+  def get(concepts, hierarchy, activation, decay) when is_atom(activation) do
+    get(concepts, hierarchy, activation_fun(activation, decay), decay)
+  end
+
+  def get(concepts, hierarchy, activation) when is_atom(activation) do
+    get(concepts, hierarchy, activation, @decay_factor)
+  end
+
+  def get(concepts, hierarchy, activation) do    
     filled_hierarchy = HierarchyOperations.list_to_hierarchy(concepts, hierarchy)
     
-    Enum.reduce(concepts, filled_hierarchy, fn { label, descriptor }, acc -> 
+    Enum.reduce(concepts, filled_hierarchy, fn { _label, descriptor }, acc -> 
       generic_single_node({ descriptor, 0 }, acc, activation)
     end)
     |> HierarchyOperations.vectorize_and_normalize
