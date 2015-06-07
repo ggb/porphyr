@@ -1,6 +1,9 @@
 # Porphyr
 
-** TODO: Add description **
+**Porphyr** makes it possible to perform spreading activation on hierarchies. It includes some basic activation functions (but it is easy to create your own) and one special function called *OneHop Activation*. 
+
+The module is meant for text analysis: You provide a preprocessed text (e. g. entities found in a document) and a hierarchy (e. g. build from a thesaurus). **Porphyr** maps the entities to the hierarchy and starts the spreading activation. Therefore the ancestors of each concept (node) that was found in the text are traversed and activated. The activation applies a new value to the node; the value is defined by an activation function. 
+
 
 ## Examples
 
